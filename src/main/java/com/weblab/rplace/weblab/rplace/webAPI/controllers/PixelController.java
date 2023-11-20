@@ -8,6 +8,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,7 +20,7 @@ import com.weblab.rplace.weblab.rplace.entities.Pixel;
 
 @RestController
 @RequestMapping("api/pixels")
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+//@CrossOrigin(origins = "http://127.0.0.1:5500") for localhost
 public class PixelController {
 	
 	private PixelService pixelService;
@@ -32,7 +33,7 @@ public class PixelController {
 	
 	
 	@PostMapping("/addPixel")
-	public Result addPixel(Pixel pixel) {
+	public Result addPixel(@RequestBody Pixel pixel) {
 		var result = pixelService.addPixel(pixel);
 		
 		return result;
