@@ -27,7 +27,7 @@ public class PixelManager implements PixelService {
 	
 	
 	@Override
-	public DataResult<List<Pixel>> getTable() {
+	public DataResult<List<Pixel>> getBoard() {
 		return new SuccessDataResult<List<Pixel>>(pixelDao.findAll(), "Tüm tablo getirildi!");
 	}
 
@@ -36,9 +36,14 @@ public class PixelManager implements PixelService {
 		
 		
 		if(CheckIfFieldsNull(pixel)) {
-			return new ErrorResult("x,y axisleri ve renk alanı boş olamaz!");
+			return new ErrorResult("Lütfen geçerli x ve y koordinatları girin!");
 		}
-		
+
+		//pixel rengi doğru mu?
+		if(!CheckIfColorsCorrect(pixel)){
+			return new ErrorResult("Lütfen geçerli bir renk girin!");
+		}
+
 		
 		//pixel var ise bunu yap
 		if(CheckIfPixelExists(pixel) == true) {
@@ -49,28 +54,30 @@ public class PixelManager implements PixelService {
 			
 			return new SuccessResult("Pixel rengi değiştirildi!");
 		}
-		
+
 		//pixel yok ise bunu yap
-		
-		
 		pixelDao.save(pixel);
-		
 		return new SuccessResult("Pixel veritabanında oluşturuldu!");
-		
-		
-		
-		
-		
 	}
 
 	private boolean CheckIfFieldsNull(Pixel pixel) {
-		if(pixel.getX() == 0 || pixel.getColor()== ""  || pixel.getY()== 0) {
+		if(pixel.getX() == 0 || pixel.getY()== 0) {
 			return true;
 		}
 		return false;
 	}
 
-
+	private boolean CheckIfColorsCorrect(Pixel pixel){
+		String color = pixel.getColor().toLowerCase();
+		return  color.equals("0xfca5a5") ||
+				color.equals("0xfde047") ||
+				color.equals("0x86efac") ||
+				color.equals("0x93c5fd") ||
+				color.equals("0xa5b4fc") ||
+				color.equals("0xd8b4fe") ||
+				color.equals("0xf9a8d4") ||
+				color.equals("0xffffff");
+	}
 
 	private boolean CheckIfPixelExists(Pixel pixel) {
 		

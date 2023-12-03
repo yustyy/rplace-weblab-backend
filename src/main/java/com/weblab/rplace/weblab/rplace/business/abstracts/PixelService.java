@@ -9,7 +9,7 @@ import com.weblab.rplace.weblab.rplace.entities.Pixel;
 public interface PixelService  {
 
 	
-	DataResult<List<Pixel>> getTable();
+	DataResult<List<Pixel>> getBoard();
 	
 	Result addPixel(Pixel pixel);
 	
