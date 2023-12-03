@@ -28,7 +28,7 @@ public class PixelManager implements PixelService {
 	
 	@Override
 	public DataResult<List<Pixel>> getBoard() {
-		return new SuccessDataResult<List<Pixel>>(pixelDao.findAll(), "Tüm tablo getirildi!");
+		return new SuccessDataResult<List<Pixel>>(pixelDao.findAllByOrderByXAscYAsc(), "Tüm tablo getirildi!");
 	}
 
 	@Override
