@@ -2,6 +2,7 @@ package com.weblab.rplace.weblab.rplace.business.concretes;
 
 import java.util.List;
 
+import com.weblab.rplace.weblab.rplace.business.constants.Messages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,30 +19,27 @@ import com.weblab.rplace.weblab.rplace.entities.Pixel;
 public class PixelManager implements PixelService {
 
 	private PixelDao pixelDao;
-	
+
 	@Autowired
 	public PixelManager(PixelDao pixelDao) {
 		this.pixelDao = pixelDao;
 	}
-	
-	
-	
+
 	@Override
 	public DataResult<List<Pixel>> getBoard() {
-		return new SuccessDataResult<List<Pixel>>(pixelDao.findAllByOrderByXAscYAsc(), "Tüm tablo getirildi!");
+		return new SuccessDataResult<List<Pixel>>(pixelDao.findAllByOrderByXAscYAsc(), Messages.boardSuccessfullyBrought);
 	}
 
 	@Override
 	public Result addPixel(Pixel pixel) {
-		
-		
+
 		if(CheckIfFieldsNull(pixel)) {
-			return new ErrorResult("Lütfen geçerli x ve y koordinatları girin!");
+			return new ErrorResult(Messages.fieldsCannotBeNull);
 		}
 
 		//pixel rengi doğru mu?
 		if(!CheckIfColorsCorrect(pixel)){
-			return new ErrorResult("Lütfen geçerli bir renk girin!");
+			return new ErrorResult(Messages.colorMustBeCorrect);
 		}
 
 		
@@ -52,12 +50,12 @@ public class PixelManager implements PixelService {
 			pixelToChange.setColor(pixel.getColor());
 			pixelDao.save(pixelToChange);
 			
-			return new SuccessResult("Pixel rengi değiştirildi!");
+			return new SuccessResult(Messages.pixelColorChanged);
 		}
 
 		//pixel yok ise bunu yap
 		pixelDao.save(pixel);
-		return new SuccessResult("Pixel veritabanında oluşturuldu!");
+		return new SuccessResult(Messages.pixelSuccessfullyAddedToDatabase);
 	}
 
 	private boolean CheckIfFieldsNull(Pixel pixel) {
@@ -97,7 +95,7 @@ public class PixelManager implements PixelService {
 	@Override
 	public DataResult<Pixel> getByXAndY(int x, int y) {
 		
-		return new SuccessDataResult<Pixel>(pixelDao.findByXAndY(x, y),"Pixel getirildi");
+		return new SuccessDataResult<Pixel>(pixelDao.findByXAndY(x, y),Messages.pixelSuccessfullyBrought);
 		
 	}
 	
